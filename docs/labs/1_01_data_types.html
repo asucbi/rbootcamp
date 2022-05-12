@@ -286,6 +286,322 @@ We would also like to note that there are always many different ways to achieve 
 <div id="accessing-parts-of-the-data" class="section level1">
 <h1>Accessing parts of the data</h1>
 <p>Suppose we read some data into R:</p>
+<pre class="r"><code>library(tidyverse)
+## temporary storage of data files until I can figure out how to get it to work with github pages
+starwars2 &lt;- read_csv(&quot;http://dynamicog.org/course_temp/starwars2.csv&quot;)</code></pre>
+<div class="yellow">
+<p><strong>Reading data from a URL</strong></p>
+<p>Note that when you have a url for some data, such as <a href="http://dynamicog.org/course_temp/starwars2">http://dynamicog.org/course_temp/starwars2</a>, you can read it in directly by giving functions like <code>read_csv()</code> the url inside quotation marks.</p>
+</div>
+<p>The data contains information on various characteristics of characters from Star Wars.
+We can print out the top of the data by using the name we just gave it:</p>
+<pre class="r"><code>starwars2</code></pre>
+<pre><code>## # A tibble: 75 × 6
+##    name               height hair_color    eye_color homeworld species
+##    &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;  
+##  1 Luke Skywalker        172 blond         blue      Tatooine  Human  
+##  2 C-3PO                 167 &lt;NA&gt;          yellow    Tatooine  Human  
+##  3 R2-D2                  96 &lt;NA&gt;          red       Naboo     Droid  
+##  4 Darth Vader           202 none          yellow    Tatooine  Human  
+##  5 Leia Organa           150 brown         brown     Alderaan  Human  
+##  6 Owen Lars             178 brown, grey   blue      Tatooine  Human  
+##  7 Beru Whitesun lars    165 brown         blue      Tatooine  Human  
+##  8 R5-D4                  97 &lt;NA&gt;          red       Tatooine  Droid  
+##  9 Biggs Darklighter     183 black         brown     Tatooine  Human  
+## 10 Obi-Wan Kenobi        182 auburn, white blue-gray Stewjon   Human  
+## # … with 65 more rows</code></pre>
+<p>Alternatively, you could use the <code>head()</code> function which displays the first six rows of the data by default. You could change this by saying, for example, <code>head(data, n = 10)</code>:</p>
+<pre class="r"><code>head(starwars2)</code></pre>
+<pre><code>## # A tibble: 6 × 6
+##   name           height hair_color  eye_color homeworld species
+##   &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;  
+## 1 Luke Skywalker    172 blond       blue      Tatooine  Human  
+## 2 C-3PO             167 &lt;NA&gt;        yellow    Tatooine  Human  
+## 3 R2-D2              96 &lt;NA&gt;        red       Naboo     Droid  
+## 4 Darth Vader       202 none        yellow    Tatooine  Human  
+## 5 Leia Organa       150 brown       brown     Alderaan  Human  
+## 6 Owen Lars         178 brown, grey blue      Tatooine  Human</code></pre>
+<p><em>(Don’t worry about the</em> <NA>s <em>for now, they are just how R tells you an entry is missing, i.e. Not Available.)</em></p>
+<div class="green">
+<p><strong>Tip:</strong> Try clicking on the data in your <strong>environment</strong> (the top right window of RStudio). It will open the data in a tab in the editor window - this is another way of looking at the data, more like you would in spreadsheet software like Microsoft Excel.
+This can be time-consuming if your data file is big.</p>
+</div>
+<p>We can take a look at how big the data is (the dimensions), using <code>dim()</code></p>
+<pre class="r"><code>dim(starwars2)</code></pre>
+<pre><code>## [1] 75  6</code></pre>
+<p>There’s a reasonable amount of data in there - 75 rows and 6 columns.
+In the <strong>starwars2</strong> data, each character is an <strong>observational unit</strong>, and there are 6 <strong>variables</strong> (things which vary between units) such as their <em>height</em>, <em>species</em>, <em>homeworld</em>, etc.</p>
+<div class="yellow">
+<p><strong>Units and variables</strong></p>
+<p>The individual entities on which data are collected are called <strong>observational units</strong> or <strong>cases</strong>. Often (but not always), these equate to the rows of a dataset.</p>
+<p>A <strong>variable</strong> is any characteristic that varies from observational unit to observational unit (these are often the columns of the dataset)</p>
+</div>
+<p>What if we want to extract certain subsections of our dataset, such as specific observational units or variables?
+This is where we learn about two important bits of R code used to access parts of data - the dollar sign <code>$</code>, and the square brackets <code>[]</code>.</p>
+<div class="frame">
+<p><strong>The dollar sign $</strong></p>
+<p>The dollar sign allows us to extract a specific variable from a dataframe.
+For instance, we can pull out the variable named “eye_color” in the data, by using <code>$eye_color</code> after the name that we gave our dataframe:</p>
+<pre class="r"><code>starwars2$eye_color</code></pre>
+<pre><code>##  [1] &quot;blue&quot;          &quot;yellow&quot;        &quot;red&quot;           &quot;yellow&quot;       
+##  [5] &quot;brown&quot;         &quot;blue&quot;          &quot;blue&quot;          &quot;red&quot;          
+##  [9] &quot;brown&quot;         &quot;blue-gray&quot;     &quot;blue&quot;          &quot;blue&quot;         
+## [13] &quot;blue&quot;          &quot;brown&quot;         &quot;black&quot;         &quot;orange&quot;       
+## [17] &quot;hazel&quot;         &quot;blue&quot;          &quot;yellow&quot;        &quot;brown&quot;        
+## [21] &quot;red&quot;           &quot;brown&quot;         &quot;blue&quot;          &quot;orange&quot;       
+## [25] &quot;blue&quot;          &quot;brown&quot;         &quot;black&quot;         &quot;red&quot;          
+## [29] &quot;blue&quot;          &quot;orange&quot;        &quot;orange&quot;        &quot;orange&quot;       
+## [33] &quot;yellow&quot;        &quot;orange&quot;        NA              &quot;brown&quot;        
+## [37] &quot;yellow&quot;        &quot;pink&quot;          &quot;hazel&quot;         &quot;yellow&quot;       
+## [41] &quot;black&quot;         &quot;orange&quot;        &quot;brown&quot;         &quot;yellow&quot;       
+## [45] &quot;black&quot;         &quot;brown&quot;         &quot;blue&quot;          &quot;orange&quot;       
+## [49] &quot;yellow&quot;        &quot;black&quot;         &quot;blue&quot;          &quot;brown&quot;        
+## [53] &quot;brown&quot;         &quot;blue&quot;          &quot;yellow&quot;        &quot;blue&quot;         
+## [57] &quot;blue&quot;          &quot;brown&quot;         &quot;brown&quot;         &quot;brown&quot;        
+## [61] &quot;brown&quot;         &quot;yellow&quot;        &quot;yellow&quot;        &quot;black&quot;        
+## [65] &quot;black&quot;         &quot;blue&quot;          &quot;unknown&quot;       &quot;unknown&quot;      
+## [69] &quot;gold&quot;          &quot;black&quot;         &quot;green, yellow&quot; &quot;blue&quot;         
+## [73] &quot;brown&quot;         &quot;black&quot;         NA</code></pre>
+</div>
+<p>Each variable in a dataframe is a vector. Once extracted, we will have a vector and not a dataframe.</p>
+<div class="frame">
+<p><strong>The square brackets []</strong></p>
+<p>Square brackets are used to do what is known as <strong>indexing</strong> (finding specific entries in your data).
+We can retrieve bits of data by identifying the <span class="math inline">\(i^{th}\)</span> entry(s) inside the square brackets, for instance:</p>
+<pre class="r"><code># assign the numbers 10, 20 ... 100 to the name &quot;somevalues&quot;
+somevalues &lt;- c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
+
+# pull out the 3rd entry
+somevalues[3]</code></pre>
+<pre><code>## [1] 30</code></pre>
+In the above example, we have a <strong>vector</strong> (a single sequence of values), and so we can retrieve entries with the syntax:
+<center>
+<strong>vector[entry]</strong>
+</center>
+<br>
+In a <strong>dataframe</strong> we have an extra dimension - we have rows <em>and</em> columns. Using square brackets with a dataframe needs us to specify both:
+<center>
+<strong>dataframe[rows, columns]</strong>
+</center>
+</div>
+<p>Let’s look at some examples:</p>
+<pre class="r"><code># first row, fourth column:
+starwars2[1, 4]</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##   eye_color
+##   &lt;chr&gt;    
+## 1 blue</code></pre>
+<pre class="r"><code># tenth row, first column:
+starwars2[10, 1]</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##   name          
+##   &lt;chr&gt;         
+## 1 Obi-Wan Kenobi</code></pre>
+<p><br></p>
+<p>If we leave either rows or columns blank, then we will get out <strong>all</strong> of them:</p>
+<pre class="r"><code># tenth row, all columns:
+starwars2[10, ]</code></pre>
+<pre><code>## # A tibble: 1 × 6
+##   name           height hair_color    eye_color homeworld species
+##   &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;  
+## 1 Obi-Wan Kenobi    182 auburn, white blue-gray Stewjon   Human</code></pre>
+<pre class="r"><code># all rows, 2nd column:
+starwars2[ , 2]</code></pre>
+<pre><code>## # A tibble: 75 × 1
+##    height
+##     &lt;dbl&gt;
+##  1    172
+##  2    167
+##  3     96
+##  4    202
+##  5    150
+##  6    178
+##  7    165
+##  8     97
+##  9    183
+## 10    182
+## # … with 65 more rows</code></pre>
+<p><br></p>
+<p>There are is another way to identify column - we can use the name in quotation marks:</p>
+<pre class="r"><code># first row, &quot;species&quot; column
+starwars2[1, &quot;species&quot;]</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##   species
+##   &lt;chr&gt;  
+## 1 Human</code></pre>
+<p><br>
+Finally, we can also ask for multiple rows, or multiple columns, or both! To do that, we use the combine function <code>c()</code>:</p>
+<pre class="r"><code># the 1st AND the 6th row,
+# and the 1st AND 3rd columns:
+starwars2[c(1,6), c(1,3)]</code></pre>
+<pre><code>## # A tibble: 2 × 2
+##   name           hair_color 
+##   &lt;chr&gt;          &lt;chr&gt;      
+## 1 Luke Skywalker blond      
+## 2 Owen Lars      brown, grey</code></pre>
+<p><br>
+And we can specify a sequence using the colon, <code>from:to</code>:</p>
+<pre class="r"><code># FROM the 1st TO the 6th row, all columns:
+starwars2[1:6, ]</code></pre>
+<pre><code>## # A tibble: 6 × 6
+##   name           height hair_color  eye_color homeworld species
+##   &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;  
+## 1 Luke Skywalker    172 blond       blue      Tatooine  Human  
+## 2 C-3PO             167 &lt;NA&gt;        yellow    Tatooine  Human  
+## 3 R2-D2              96 &lt;NA&gt;        red       Naboo     Droid  
+## 4 Darth Vader       202 none        yellow    Tatooine  Human  
+## 5 Leia Organa       150 brown       brown     Alderaan  Human  
+## 6 Owen Lars         178 brown, grey blue      Tatooine  Human</code></pre>
+<p>Why? Because the colon operator, <code>from:to</code>, creates a vector from the value <code>from</code> to the value <code>to</code> in steps of 1.</p>
+<pre class="r"><code>1:6</code></pre>
+<pre><code>## [1] 1 2 3 4 5 6</code></pre>
+<div class="optional-begin">
+<span id="opt-start-1" class="fa fa-chevron-circle-right optional-icon clickable" onclick="toggle_visibility(&#39;opt-body-1&#39;, &#39;opt-start-1&#39;)"> Extra: Combining $ and []. Click to expand</span>
+</div>
+<div id="opt-body-1" class="optional-body" style="display: none;">
+<p>We can use the two accessors in combination:</p>
+<pre class="r"><code># extract the variable called &quot;name&quot; and show the 20th entry
+starwars2$name[20]</code></pre>
+<pre><code>## [1] &quot;Boba Fett&quot;</code></pre>
+<p>This represents the 20th name in the data.</p>
+<p><strong>Note:</strong> When we do this, we don’t have the comma inside the square brackets.
+When we use the <code>$</code> to pull out a variable, such as <code>starwars2$name</code>, we no longer have a dataframe - <code>starwars2$name</code> doesn’t have rows and columns, it just has a series of values - <em>it’s a vector!</em>.
+So when you are using <code>[]</code> with a <strong>vector</strong> (1 dimension) rather than a <strong>dataframe</strong> (2 dimensions), you don’t specify <code>[rows, columns]</code>, but simply <code>[entry]</code>.</p>
+</div>
+<p class="optional-end">
+</p>
+<div class="yellow">
+<p><strong>The dollar sign $</strong></p>
+<p>Used to extract a variable from a dataframe:</p>
+<ul>
+<li><code>dataframe$variable</code></li>
+</ul>
+<p><strong>The square brackets []</strong></p>
+<p>Used to extract parts of an R object by identifying rows and/or columns, or more generally, “entries”. Left blank will return all.</p>
+<ul>
+<li><code>vector[entries]</code></li>
+<li><code>dataframe[rows, columns]</code></li>
+</ul>
+</div>
+<div id="changing-specific-entries" class="section level2 unnumbered">
+<h2>Changing specific entries</h2>
+<p>Above, we looked at the subsection of the data where the <em>species</em> variable had the entry “Droid”. Some of you may have noticed earlier that we had some data on C3PO. Is he not also a droid?</p>
+<center>
+<img src="images/types_of_data/c3po.png" />
+</center>
+<p>(Looks pretty Droid-y to me! <em>disclaimer: I know nothing about Star Wars</em> 🙂 )</p>
+<p>Just as we saw above how to <em>access</em> specific entries, e.g.:</p>
+<pre class="r"><code># 2nd row, all columns
+starwars2[2, ]</code></pre>
+<pre><code>## # A tibble: 1 × 6
+##   name  height hair_color eye_color homeworld species
+##   &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;  
+## 1 C-3PO    167 &lt;NA&gt;       yellow    Tatooine  Human</code></pre>
+<pre class="r"><code># 2nd row, 6th column (the &quot;species&quot; column)
+starwars2[2,6]</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##   species
+##   &lt;chr&gt;  
+## 1 Human</code></pre>
+<p>We can change these by <strong>assigning them a new value</strong> (remember the <code>&lt;-</code> symbol):</p>
+<pre class="r"><code># C3PO is a droid, not a human
+starwars2[2,6] &lt;- &quot;Droid&quot;
+
+# Look at the 2nd row now -
+# the entry in the &quot;species&quot; column has changed:
+starwars2[2, ]</code></pre>
+<pre><code>## # A tibble: 1 × 6
+##   name  height hair_color eye_color homeworld species
+##   &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;  
+## 1 C-3PO    167 &lt;NA&gt;       yellow    Tatooine  Droid</code></pre>
+</div>
+</div>
+<div id="exercises" class="section level1">
+<h1>Exercises</h1>
+<p>For the exercises, we have a dataset on some of the most popular internet passwords, their strength, and how long it took for an algorithm to crack it. The data is available online at <a href="http://dynamicog.org/course_temp/passworddata.csv" class="uri">http://dynamicog.org/course_temp/passworddata.csv</a>.</p>
+<table>
+<colgroup>
+<col width="42%" />
+<col width="57%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rank</td>
+<td>Popularity in the database of released passwords</td>
+</tr>
+<tr class="even">
+<td>password</td>
+<td>Password</td>
+</tr>
+<tr class="odd">
+<td>type</td>
+<td>Category of password</td>
+</tr>
+<tr class="even">
+<td>cracked</td>
+<td>Time to crack by online guessing</td>
+</tr>
+<tr class="odd">
+<td>strength</td>
+<td>Strength = quality of password where 10 is highest, 1 is lowest</td>
+</tr>
+<tr class="even">
+<td>strength_cat</td>
+<td>Strength category (weak, medium, strong)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<div class="question-begin">
+Question 1
+</div>
+<div class="question-body">
+<p>Open a new Rmarkdown document.</p>
+<p><strong>File &gt; New File &gt; R Markdown..</strong></p>
+</div>
+<p class="question-end">
+</p>
+<hr />
+<div class="question-begin">
+Question 2
+</div>
+<div class="question-body">
+<p>In your first code-chunk, load the <em>tidyverse</em> packages with the following command:</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<p>Make sure you run the chunk.</p>
+</div>
+<p class="question-end">
+</p>
+<hr />
+<div class="question-begin">
+Question 3
+</div>
+<div class="question-body">
+<p>Read in the data from the link (<a href="http://dynamicog.org/course_temp/passworddata.csv" class="uri">http://dynamicog.org/course_temp/passworddata.csv</a>).</p>
+<p>You may notice that the url ends with <strong>.csv</strong>. This means we can use the <code>read_csv()</code> function to read it into R.</p>
+<p>Be sure to assign it a name, otherwise it will just print it out, and not store it in R’s environment!</p>
+</div>
+<p class="question-end">
+</p>
+<div class="solution-begin">
+<span id="sol-start-2" class="fa fa-chevron-circle-right solution-icon clickable" onclick="toggle_visibility(&#39;sol-body-2&#39;, &#39;sol-start-2&#39;)"> Solution </span>
+</div>
+<div id="sol-body-2" class="solution-body" style="display: none;">
+<pre class="r"><code>pwords &lt;- read_csv(&quot;http://dynamicog.org/course_temp/passworddata.csv&quot;)
+pwords</code></pre>
+<pre><code>## # A tibble: 0 × 0</code></pre>
+</div>
+<p class="solution-end">
+</p>
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;">
+
+</div>
 </div>
 
 

@@ -52,11 +52,243 @@ Suppose we read some data into R:
 
 ```{r}
 library(tidyverse)
-starwars2 <- read_csv("https://asucbi.github.io/data/starwars2.csv")
+## temporary storage of data files until I can figure out how to get it to work with github pages
+starwars2 <- read_csv("http://dynamicog.org/course_temp/starwars2.csv")
 ```
 
+:::yellow
+__Reading data from a URL__
+
+Note that when you have a url for some data, such as [http://dynamicog.org/course_temp/starwars2](http://dynamicog.org/course_temp/starwars2), you can read it in directly by giving functions like `read_csv()` the url inside quotation marks.
+:::
+
+The data contains information on various characteristics of characters from Star Wars.
+We can print out the top of the data by using the name we just gave it:
+```{r}
+starwars2
+```
+
+Alternatively, you could use the `head()` function which displays the first six rows of the data by default. You could change this by saying, for example, `head(data, n = 10)`:
+```{r}
+head(starwars2)
+```
+
+_(Don't worry about the_ <NA>s _for now, they are just how R tells you an entry is missing, i.e. Not Available.)_
+
+:::green
+__Tip:__ Try clicking on the data in your __environment__ (the top right window of RStudio). It will open the data in a tab in the editor window - this is another way of looking at the data, more like you would in spreadsheet software like Microsoft Excel.
+This can be time-consuming if your data file is big.
+:::
+
+We can take a look at how big the data is (the dimensions), using `dim()`
+```{r}
+dim(starwars2)
+```
+
+There's a reasonable amount of data in there - `r nrow(starwars2)` rows and `r ncol(starwars2)` columns.
+In the __starwars2__ data, each character is an __observational unit__, and there are 6 __variables__ (things which vary between units) such as their _height_, _species_, _homeworld_, etc.
+
+:::yellow
+__Units and variables__
+
+The individual entities on which data are collected are called __observational units__ or __cases__. Often (but not always), these equate to the rows of a dataset.
+
+A __variable__ is any characteristic that varies from observational unit to observational unit (these are often the columns of the dataset)
+:::
+
+What if we want to extract certain subsections of our dataset, such as specific observational units or variables?
+This is where we learn about two important bits of R code used to access parts of data - the dollar sign `$`, and the square brackets `[]`.
+
+:::frame
+__The dollar sign $__
+
+The dollar sign allows us to extract a specific variable from a dataframe.
+For instance, we can pull out the variable named "eye_color" in the data, by using `$eye_color` after the name that we gave our dataframe:
+```{r}
+starwars2$eye_color
+```
+:::
+
+Each variable in a dataframe is a vector. Once extracted, we will have a vector and not a dataframe.
+
+:::frame
+__The square brackets []__
+
+Square brackets are used to do what is known as __indexing__ (finding specific entries in your data).
+We can retrieve bits of data by identifying the $i^{th}$ entry(s) inside the square brackets, for instance:
+
+```{r}
+# assign the numbers 10, 20 ... 100 to the name "somevalues"
+somevalues <- c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
+
+# pull out the 3rd entry
+somevalues[3]
+```
+
+In the above example, we have a __vector__ (a single sequence of values), and so we can retrieve entries with the syntax:
+<center>
+**vector[entry]**
+</center>
+<br>
+In a __dataframe__ we have an extra dimension - we have rows _and_ columns. Using square brackets with a dataframe needs us to specify both:
+<center>
+**dataframe[rows, columns]**
+</center>
+:::
+
+Let's look at some examples:
+```{r}
+# first row, fourth column:
+starwars2[1, 4]
+
+# tenth row, first column:
+starwars2[10, 1]
+```
+
+<br>
+
+If we leave either rows or columns blank, then we will get out __all__ of them:
+```{r}
+# tenth row, all columns:
+starwars2[10, ]
+
+# all rows, 2nd column:
+starwars2[ , 2]
+```
+
+<br>
+
+There are is another way to identify column - we can use the name in quotation marks:
+```{r}
+# first row, "species" column
+starwars2[1, "species"]
+```
+<br>
+Finally, we can also ask for multiple rows, or multiple columns, or both! To do that, we use the combine function `c()`:
+```{r}
+# the 1st AND the 6th row,
+# and the 1st AND 3rd columns:
+starwars2[c(1,6), c(1,3)]
+```
+<br>
+And we can specify a sequence using the colon, `from:to`:
+```{r}
+# FROM the 1st TO the 6th row, all columns:
+starwars2[1:6, ]
+```
+
+Why? Because the colon operator, `from:to`, creates a vector from the value `from` to the value `to` in steps of 1.
+```{r}
+1:6
+```
+`r optbegin(label="Extra: Combining $ and []. Click to expand", olabel=FALSE)`
+We can use the two accessors in combination:
+
+```{r}
+# extract the variable called "name" and show the 20th entry
+starwars2$name[20]
+```
+
+This represents the 20th name in the data.
+
+__Note:__ When we do this, we don't have the comma inside the square brackets.
+When we use the `$` to pull out a variable, such as `starwars2$name`, we no longer have a dataframe - `starwars2$name` doesn't have rows and columns, it just has a series of values - _it's a vector!_.
+So when you are using `[]` with a __vector__ (1 dimension) rather than a __dataframe__ (2 dimensions), you don't specify `[rows, columns]`, but simply `[entry]`.
+`r optend()`
 
 
+:::yellow
+__The dollar sign $__
 
+Used to extract a variable from a dataframe:
+
++ `dataframe$variable`
+
+__The square brackets []__
+
+Used to extract parts of an R object by identifying rows and/or columns, or more generally, "entries". Left blank will return all.
+
++ `vector[entries]`
++ `dataframe[rows, columns]`
+:::
+
+## Changing specific entries {-}
+
+Above, we looked at the subsection of the data where the _species_ variable had the entry "Droid". Some of you may have noticed earlier that we had some data on C3PO. Is he not also a droid?
+
+<center>
+![](images/types_of_data/c3po.png)
+</center>
+
+(Looks pretty Droid-y to me! _disclaimer: I know nothing about Star Wars_ &#128578; )
+
+Just as we saw above how to _access_ specific entries, e.g.:
+```{r}
+# 2nd row, all columns
+starwars2[2, ]
+# 2nd row, 6th column (the "species" column)
+starwars2[2,6]
+```
+
+We can change these by __assigning them a new value__ (remember the `<-` symbol):
+```{r}
+# C3PO is a droid, not a human
+starwars2[2,6] <- "Droid"
+
+# Look at the 2nd row now -
+# the entry in the "species" column has changed:
+starwars2[2, ]
+```
+
+# Exercises
+
+For the exercises, we have a dataset on some of the most popular internet passwords, their strength, and how long it took for an algorithm to crack it. The data is available online at http://dynamicog.org/course_temp/passworddata.csv.
+
+| Variable Name | Description            |
+|---------------|--------------------|
+| rank   | Popularity in the database of released passwords |
+| password     | Password |
+| type     | Category of password  |
+| cracked     | Time to crack by online guessing |
+| strength     | Strength = quality of password where 10 is highest, 1 is lowest |
+| strength_cat     | Strength category (weak, medium, strong) |
+
+---
+
+`r qbegin(1)`
+Open a new Rmarkdown document.
+
+__File > New File > R Markdown..__
+`r qend()`
+
+---
+
+`r qbegin(2)`
+In your first code-chunk, load the _tidyverse_ packages with the following command:
+```{r eval=FALSE}
+library(tidyverse)
+```
+
+Make sure you run the chunk.
+`r qend()`
+
+---
+
+`r qbegin(3)`
+Read in the data from the link (http://dynamicog.org/course_temp/passworddata.csv).
+
+You may notice that the url ends with __.csv__. This means we can use the `read_csv()` function to read it into R.
+
+Be sure to assign it a name, otherwise it will just print it out, and not store it in R's environment!
+`r qend()`
+
+`r solbegin(show=params$SHOW_SOLS, toggle=params$TOGGLE)`
+```{r}
+pwords <- read_csv("http://dynamicog.org/course_temp/passworddata.csv")
+pwords
+```
+`r solend()`
+
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
 
 
