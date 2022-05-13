@@ -129,9 +129,9 @@ knitr::include_graphics("./figures/CBI_inforgraphic.png")
 
 ---
 
-# Path to Concentration (Behavioral Data Science)
+# Concentration (Behavioral Data Science)
 
-```{r, echo=FALSE}
+```{r,echo=FALSE}
 knitr::include_graphics("./figures/pathtoconcentrate.png")
 ```
 
@@ -139,11 +139,20 @@ knitr::include_graphics("./figures/pathtoconcentrate.png")
 
 # Projected Timeline (Road Map)
 
+```{r, out.width = "900px", echo=FALSE}
+knitr::include_graphics("./figures/year1to3focus.png")
+```
+
 ---
 
 # Projected Timeline (Year 1)
 
+```{r, out.width = "900px", echo=FALSE}
+knitr::include_graphics("./figures/year1focus.png")
+```
+
 ---
+
 # Where does dapR1 fit for Spring 2023?
 
 + Need to figure out course schedule for initial piloting!
