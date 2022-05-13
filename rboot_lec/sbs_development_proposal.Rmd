@@ -1,6 +1,6 @@
 ---
-title: "<b>Course Introduction </b>"
-subtitle: "Data Analysis for Psychology in R <br><br> "
+title: "<b>CBI Research Cluster</b>"
+subtitle: "Course Development: Data Analysis for Psychology in R <br><br> "
 author: "Nick and Derek"
 institute: "SBS ASU"
 date: ""
