@@ -595,7 +595,20 @@ Question 3
 <div id="sol-body-2" class="solution-body" style="display: none;">
 <pre class="r"><code>pwords &lt;- read_csv(&quot;http://dynamicog.org/course_temp/passworddata.csv&quot;)
 pwords</code></pre>
-<pre><code>## # A tibble: 0 × 0</code></pre>
+<pre><code>## # A tibble: 500 × 6
+##     rank password type                cracked strength strength_cat
+##    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;                 &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;       
+##  1     1 password password-related       6.91        8 medium      
+##  2     2 123456   simple-alphanumeric   18.5         4 weak        
+##  3     3 12345678 simple-alphanumeric    1.29        4 weak        
+##  4     4 1234     simple-alphanumeric   11.1         4 weak        
+##  5     5 qwerty   simple-alphanumeric    3.72        8 medium      
+##  6     6 12345    simple-alphanumeric    1.85        4 weak        
+##  7     7 dragon   animal                 3.72        8 medium      
+##  8     8 baseball sport                  6.91        4 weak        
+##  9     9 football sport                  6.91        7 medium      
+## 10    10 letmein  password-related       3.19        8 medium      
+## # … with 490 more rows</code></pre>
 </div>
 <p class="solution-end">
 </p>
