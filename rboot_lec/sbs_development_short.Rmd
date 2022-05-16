@@ -1,6 +1,6 @@
 ---
 title: "<b>CBI Research Cluster</b>"
-subtitle: "Course Development: Behavioral Data Science for R <br><br> "
+subtitle: "Course Development: Data Analysis for Psychology in R <br><br> "
 author: "Nick and Derek"
 institute: "SBS ASU"
 date: ""
@@ -91,7 +91,7 @@ knitr::include_graphics("./figures/CBI_inforgraphic.png")
 
 # Composable: Data Analysis for Psychology in R Sequence
 
-+ Behavioral Data Science for R I (bdsR1)
++ Data Analysis for Psychology in R I (dapR1)
 
   + Module: Working with data
   
@@ -101,11 +101,11 @@ knitr::include_graphics("./figures/CBI_inforgraphic.png")
   
   + Module: Basic tests
   
-+ Behavioral Data Science for R II (bdsR2)
++ Data Analysis for Psychology in R II (dapR2)
 
   + Modules: TBD
   
-+ Behavioral Data Science for R III (bdsR3)
++ Data Analysis for Psychology in R III (dapR3)
 
   + Modules: TBD
 
@@ -130,7 +130,7 @@ knitr::include_graphics("./figures/year1to3focus.png")
 # Projected Timeline (Year 1)
 
 ```{r, out.width = "900px", echo=FALSE}
-knitr::include_graphics("./figures/year1focus_join.png")
+knitr::include_graphics("./figures/year1focus.png")
 ```
 
 ---
